@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صفحة المعلن | مكانك</title>
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="bar">
+  <img src="icon.png" alt=""><a class="name" href="./">مكانك</a>
+  <nav><a href="terms.html">شروط الاستخدام</a><a href="privacy.html">سياسة الخصوصية</a></nav>
+</div></header>
+<main>
+<section id="box"><p class="muted">جاري التحميل…</p></section>
+<section><h2 style="margin-top:0" id="cnt">الإعلانات المتاحة</h2><div class="grid" id="grid"></div></section>
+<div class="cta"><b>عندك تطبيق مكانك؟</b> افتح التطبيق وكلّم المعلن مباشرة.<br><span class="muted">التطبيق قريبًا على Google Play</span></div>
+</main>
+<footer>© مكانك Makanak · <a href="mailto:support@makanakapp.net">support@makanakapp.net</a></footer>
+<script src="shared.js"></script>
+<script>
+(async()=>{const box=document.getElementById('box');const id=qid();
+try{if(!id)throw 0;const [ps,ls]=await Promise.all([sb('profiles?select=id,name,kind,verified,created_at&id=eq.'+id),sb('listings?select=*&status=eq.active&owner_id=eq.'+id+'&order=created_at.desc&limit=100')]);
+const p=ps[0];if(!p)throw 0;const name=p.name||(ls[0]&&ls[0].owner_name)||'مستخدم';document.title=name+' | مكانك';
+box.innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="av" style="width:64px;height:64px;font-size:26px">${esc(name[0])}</div><div><h1 style="margin:0">${esc(name)} ${p.verified?'<span class="ver">✔ موثّق</span>':''}</h1><div class="muted">${p.kind==='agency'?'مكتب عقارات':'مالك'} · على مكانك من ${new Date(p.created_at).getFullYear()}</div></div></div>`;
+document.getElementById('cnt').textContent=`الإعلانات المتاحة (${ls.length})`;
+document.getElementById('grid').innerHTML=ls.length?ls.map(card).join(''):'<p class="muted">مفيش إعلانات متاحة دلوقتي.</p>';
+}catch(e){box.innerHTML='<h1>الصفحة دي مش موجودة</h1>';document.getElementById('grid').innerHTML='';}})();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إعلان | مكانك</title>
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="bar">
+  <img src="icon.png" alt=""><a class="name" href="./">مكانك</a>
+  <nav><a href="terms.html">شروط الاستخدام</a><a href="privacy.html">سياسة الخصوصية</a></nav>
+</div></header>
+<main>
+<section id="box"><p class="muted">جاري التحميل…</p></section>
+<div class="cta"><b>عندك تطبيق مكانك؟</b> افتح التطبيق وكلّم المعلن مباشرة.<br><span class="muted">التطبيق قريبًا على Google Play</span></div>
+</main>
+<footer>© مكانك Makanak · <a href="mailto:support@makanakapp.net">support@makanakapp.net</a></footer>
+<script src="shared.js"></script>
+<script>
+(async()=>{const box=document.getElementById('box');const id=qid();
+try{if(!id)throw 0;const r=await sb('listings?select=*&status=eq.active&id=eq.'+id);const l=r[0];if(!l)throw 0;
+document.title=l.title+' | مكانك';
+const specs=[l.size&&[l.size+' م²','المساحة'],l.rooms&&[l.rooms,'غرف'],l.bathrooms&&[l.bathrooms,'حمام'],l.floor!=null&&[l.floor,'الدور']].filter(Boolean);
+box.innerHTML=`${(l.images||[]).length?`<div class="gal">${l.images.map(u=>`<img src="${esc(u)}" alt="">`).join('')}</div>`:''}
+<p class="chips" style="margin-top:12px"><span>${l.purpose==='rent'?'إيجار':'بيع'}</span><span>${esc(TYPES[l.type]||'')}</span></p>
+<div class="price">${esc(price(l))}</div><h1>${esc(l.title)}</h1><div class="muted">📍 ${esc(place(l))}</div>
+<div class="specs">${specs.map(s=>`<div><b>${esc(s[0])}</b><br><span class="muted">${s[1]}</span></div>`).join('')}</div>
+${l.description?`<h2>الوصف</h2><p style="white-space:pre-line">${esc(l.description)}</p>`:''}
+${l.video_url?`<h2>فيديو العقار</h2><video src="${esc(l.video_url)}" controls style="width:100%;border-radius:14px;background:#000"></video>`:''}
+<a class="owner" href="u.html?id=${l.owner_id}"><div class="av">${esc((l.owner_name||'؟')[0])}</div><div><b>${esc(l.owner_name||'مستخدم')}</b><br><span class="muted">شوف كل إعلاناته</span></div></a>`;
+}catch(e){box.innerHTML='<h1>الإعلان ده مش متاح</h1><p class="muted">ممكن يكون اتباع أو اتأجر أو اتشال.</p>';}})();
+</script>
+</body>
+</html>
